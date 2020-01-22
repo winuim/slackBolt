@@ -1,5 +1,6 @@
 import { App, LogLevel } from "@slack/bolt";
 import * as store from "./store";
+import { messages } from "./messages";
 
 const app = new App({
   // using the `authorize` function instead of the `token` property
@@ -39,7 +40,7 @@ app.event("app_home_opened", ({ event, say }) => {
     };
     store.addUser(user);
 
-    say(`Hello world, and welcome <@${event.user}>!`);
+    say(messages.welcome_app_home);
   } else {
     say("Hi again!");
   }
@@ -48,7 +49,33 @@ app.event("app_home_opened", ({ event, say }) => {
 // Listens to incoming messages that contain "hello"
 app.message("hello", ({ message, say }) => {
   // say() sends a message to the channel where the event was triggered
-  say(`Hey there <@${message.user}>!`);
+  say({
+    text: "hi",
+    blocks: [
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `Hey there <@${message.user}>!`
+        },
+        accessory: {
+          type: "button",
+          text: {
+            type: "plain_text",
+            text: "Click Me"
+          },
+          // eslint-disable-next-line @typescript-eslint/camelcase
+          action_id: "button_click"
+        }
+      }
+    ]
+  });
+});
+
+app.action("button_click", ({ body, ack, say }) => {
+  // Acknowledge the action
+  ack();
+  say(`<@${body.user.id}> clicked the button`);
 });
 
 // 特定の文字列、この場合 👋絵文字を含むメッセージと一致
