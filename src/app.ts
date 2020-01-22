@@ -51,6 +51,29 @@ app.message("hello", ({ message, say }) => {
   say(`Hey there <@${message.user}>!`);
 });
 
+// 特定の文字列、この場合 👋絵文字を含むメッセージと一致
+app.message(":wave:", async ({ message, say }) => {
+  say(`Hello, <@${message.user}>`);
+});
+
+// "knock knock" を含むメッセージをリスニングし、 "who's there?" というメッセージをイタリック体で送信
+app.message("knock knock", ({ message, say }) => {
+  say("_Who's there?_");
+});
+
+// Listens to incoming messages that contain "ping"
+app.message("ping", ({ message, say }) => {
+  // say() sends a message to the channel where the event was triggered
+  say("pong");
+});
+
+// この echo コマンドは 単純にコマンドをエコー（こだま）
+app.command("/echo", async ({ command, ack, say }) => {
+  // コマンドリクエストを確認
+  ack();
+  say(`${command.text}`);
+});
+
 app.error(error => {
   // Check the details of the error to handle cases where you should retry sending a message or stop the app
   console.error(error);
