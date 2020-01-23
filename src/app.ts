@@ -1,4 +1,4 @@
-import { App, LogLevel } from "@slack/bolt";
+import { App, LogLevel, subtype } from "@slack/bolt";
 import * as store from "./store";
 import { messages } from "./messages";
 import * as helpers from "./helpers";
@@ -78,7 +78,7 @@ app.event("reaction_added", async ({ event, context, say }) => {
     });
 
     // formatting the user's name to mention that user in the message (see: https://api.slack.com/messaging/composing/formatting)
-    let name = "<@ who? >";
+    let name = "";
     if (helpers.hasProperty(user.user, "id")) {
       name = "<@" + user.user.id + ">";
     }
@@ -172,7 +172,6 @@ app.action(
     if (helpers.hasProperty(action, "selected_channel")) {
       channelId = action.selected_channel;
     }
-    console.debug("channelId= " + channelId);
 
     // retrieve channel info
     const channelInfo = await app.client.channels.info({
@@ -186,10 +185,7 @@ app.action(
         channelName = channelInfo.channel.name;
       }
     }
-    console.debug("channelName= " + channelName);
 
-    console.debug("token= " + context.userToken);
-    console.debug("user= " + store.getMe());
     // invite Bot user to channel
     await app.client.channels.invite({
       token: context.userToken,
@@ -205,11 +201,6 @@ app.action(
     say(message);
   }
 );
-
-app.event("app_mention", ({ event, say }) => {
-  console.debug(event);
-  say(`HELLO, <@${event.user}>`);
-});
 
 // Listens to incoming messages that contain "hello"
 app.message("hello", ({ message, say }) => {
@@ -243,8 +234,43 @@ app.action("button_click", ({ body, ack, say }) => {
   say(`<@${body.user.id}> clicked the button`);
 });
 
+// 特定の文字列、この場合 👋絵文字を含むメッセージと一致
+app.message(":wave:", async ({ message, say }) => {
+  say(`Hello, <@${message.user}>`);
+});
+
+app.message(/^(hi|hello|hey).*/, async ({ context, say }) => {
+  // context.matches の内容が特定の正規表現と一致
+  const greeting = context.matches[0];
+
+  say(`${greeting}, how are you?`);
+});
+
+// "knock knock" を含むメッセージをリスニングし、 "who's there?" というメッセージをイタリック体で送信
+app.message("knock knock", ({ message, say }) => {
+  say("_Who's there?_");
+});
+
+app.event("app_mention", ({ event, say }) => {
+  console.debug(event);
+  say(`HELLO, <@${event.user}>`);
+});
+
+// bot からのメッセージ全てと一致
+app.message(subtype("bot_message"), ({ message }) => {
+  console.log(`The bot user ${message.user} said ${message.text}`);
+});
+
+// この echo コマンドは 単純にコマンドをエコー（こだま）
+app.command("/echo", async ({ command, ack, say }) => {
+  // コマンドリクエストを確認
+  ack();
+
+  say(`${command.text}`);
+});
+
 app.error(error => {
-  // メッセージ再送信もしくはアプリを停止するかの判断をするためにエラーの詳細を出力して確認
+  // Check the details of the error to handle cases where you should retry sending a message or stop the app
   console.error(error);
 });
 
