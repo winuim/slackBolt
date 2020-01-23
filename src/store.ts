@@ -1,4 +1,5 @@
 // This is not a real datastore, but it can be if you make it one :)
+
 const messages = {};
 const users: {
   [id: string]: {
@@ -7,7 +8,10 @@ const users: {
   };
 } = {};
 let me: string = undefined;
-let defaultChannel: string = undefined;
+let defaultChannel: {
+  name: string;
+  id: string;
+} = undefined;
 
 function getMessages() {
   return messages;
@@ -21,7 +25,7 @@ function getUser(id: string) {
   return users[id];
 }
 
-function setChannel(channel: string) {
+function setChannel(channel: { name: string; id: string }) {
   defaultChannel = channel;
 }
 

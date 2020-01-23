@@ -6,14 +6,14 @@ const messages: {
 } = {
   welcome_app_home: {
     text:
-      "Hi there! Bolt is a simple App that forwards messages to another channel by reacting to a message with the :zap: emoji.",
+      "こんにちは！ Boltは、 :zap: emojiを使用してメッセージに反応することにより、メッセージを別のチャネルに転送するシンプルなアプリです。",
     blocks: [
       {
         type: "section",
         text: {
           type: "mrkdwn",
           text:
-            "Hi there! \n\n Bolt is a simple App that forwards messages to another channel by reacting to a message with the :zap: emoji. \n\n But before we start, let's configure a channel you want all messages to be forwarded to. \n\n"
+            "こんにちは！ \n\n  Boltは、 :zap: emojiを使用してメッセージに反応することにより、メッセージを別のチャネルに転送するシンプルなアプリです。 \n\n ただし、開始する前に、すべてのメッセージを転送するチャンネルを設定しましょう。"
         }
       },
       {
@@ -23,7 +23,7 @@ const messages: {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: "*Pick a channel from the dropdown list*"
+          text: "*ドロップダウンリストからチャンネルを選択します*"
         },
         accessory: {
           action_id: "configure_channel",
@@ -39,40 +39,40 @@ const messages: {
   },
   welcome_channel: {
     text:
-      "Hi there! Bolt is a simple App that forwards messages to another channel by reacting to a message with the :zap: emoji.",
+      "こんにちは！ Boltは、 :zap: emojiを使用してメッセージに反応することにより、メッセージを別のチャネルに転送するシンプルなアプリです。",
     blocks: [
       {
         type: "section",
         text: {
           type: "mrkdwn",
           text:
-            "Hi there! \n\n Bolt is a simple App that forwards messages from this channel to <#{{channelId}}|{{channelName}}> by reacting to a message with the :zap: emoji."
+            "こんにちは！ \n\n Boltは、 :zap: emojiを使用してメッセージに反応することにより、このチャンネルから <#{{channelId}}|{{channelName}}> にメッセージを転送するシンプルなアプリです。"
         }
       }
     ]
   },
   added_to_channel: {
-    text: "Bolt has been invited to channel",
+    text: "Boltがチャンネルに招待されました",
     blocks: [
       {
         type: "section",
         text: {
           type: "mrkdwn",
           text:
-            ":zap: Bolt has been invited to *<#{{channelId}}|{{channelName}}>*"
+            ":zap: Boltは *<#{{channelId}}|{{channelName}}>* に招待されました"
         }
       }
     ]
   },
   channel_configured: {
-    text: "The default channel for Bolt has been configured",
+    text: "Boltのデフォルトチャネルが設定されました",
     blocks: [
       {
         type: "section",
         text: {
           type: "mrkdwn",
           text:
-            ":tada: The default channel for Bolt has been configured for *<#{{channelId}}|{{channelName}}>*"
+            ":tada: Boltのデフォルトチャネルは *<#{{channelId}}|{{channelName}}>* 用に構成されています"
         }
       },
       {
@@ -83,14 +83,14 @@ const messages: {
         text: {
           type: "mrkdwn",
           text:
-            "You can now invite Bolt to a channel by typing `/invite` in any of your channels or simply select one channel from the dropdown below."
+            "任意のチャンネルで「/invite」と入力するか、下のドロップダウンからチャンネルを選択するだけで、Boltをチャンネルに招待できます。"
         }
       },
       {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: "*Invite Bolt to a channel*"
+          text: "*Boltをチャンネルに招待する*"
         },
         accessory: {
           action_id: "add_to_channel",
