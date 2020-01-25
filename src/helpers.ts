@@ -1,20 +1,3 @@
-// JSON define
-type JSONValueType =
-  | string
-  | number
-  | boolean
-  | JSONValueTypeArray
-  | JSONValueTypeObject;
-type JSONValueTypeArray = Array<JSONValueType>;
-interface JSONValueTypeObject {
-  [key: string]: JSONValueType;
-}
-
-// deep copy a message
-function copy(message: JSONValueType) {
-  return JSON.parse(JSON.stringify(message));
-}
-
 // helper to generate a URL with query parameters
 function getUrlWithParams(url: string, params: { [x: string]: string }) {
   if (url.indexOf("?") < 0) url += "?";
@@ -22,6 +5,11 @@ function getUrlWithParams(url: string, params: { [x: string]: string }) {
     .map(key => key + "=" + params[key])
     .join("&");
   return url;
+}
+
+// deep copy a message
+function copy(message: any) {
+  return JSON.parse(JSON.stringify(message));
 }
 
 function hasProperty<K extends string>(
