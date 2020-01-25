@@ -239,11 +239,12 @@ app.message(":wave:", async ({ message, say }) => {
   say(`Hello, <@${message.user}>`);
 });
 
-app.message(/^(hi|hello|hey).*/, async ({ context, say }) => {
+app.message(/^(hi|hey).*/, async ({ context, message, say }) => {
   // context.matches の内容が特定の正規表現と一致
   const greeting = context.matches[0];
-
-  say(`${greeting}, how are you?`);
+  if (greeting) {
+    say(`<@${message.user}>, how are you?`);
+  }
 });
 
 // "knock knock" を含むメッセージをリスニングし、 "who's there?" というメッセージをイタリック体で送信
@@ -251,9 +252,17 @@ app.message("knock knock", ({ message, say }) => {
   say("_Who's there?_");
 });
 
+// *** Greeting any user that says "hi" ***
 app.event("app_mention", ({ event, say }) => {
-  console.debug(event);
-  say(`HELLO, <@${event.user}>`);
+  console.log(event);
+  const { text, user } = event;
+
+  // Only deal with a message that contains 'hi'
+  if (/hi/i.test(text)) {
+    // Respond to the message back in the same channel
+    // Bolt's say() method calls Slack Web API, chat.postMessage
+    say(`Hello, <@${user}>! :tada:`);
+  }
 });
 
 // bot からのメッセージ全てと一致
